@@ -8,7 +8,8 @@ from create_bot import dp, bot, Dispatcher
 
 # @dp.message_handler(commands=['start'])
 async def info(message: types.Message):
-    await message.answer_photo(photo=open('img/dom.jpg', 'rb'), caption=f'Hello, {message.from_user.first_name}!', reply_markup=client_kd.start_menu)
+    await message.answer_photo(photo=open('img/dom.jpg', 'rb'), caption=f'Hello, {message.from_user.first_name}!',
+                               reply_markup=client_kd.start_menu)
 
 
 # @dp.callback_query_handler(text='create_account')
@@ -16,6 +17,15 @@ async def registration(call: types.CallbackQuery) -> None:
     await call.message.answer_photo(photo=open('img/dom.jpg', 'rb'), caption='<b>ЗАРЕЄСТРУВАТИСЯ</b> ↘️:',
                                     reply_markup=client_kd.btn_reg2, parse_mode='HTML')
     await call.message.delete()
+
+
+# @dp.message_handler(content_types=['contact'])
+async def reg_phone(message: types.Message):
+    if message.contact is not None:
+        print(message.contact.phone_number[-10:])
+    await message.delete()
+    await bot.send_message(message.from_user.id, f'Хвилинку, перевіряю номер телефону... 🧐',
+                           reply_markup=types.ReplyKeyboardRemove())
 
 
 # @dp.callback_query_handler(text='kod_register')
@@ -35,6 +45,7 @@ def register_handlers_client(disp: Dispatcher):
     disp.register_message_handler(info, commands=['start'])
     disp.register_callback_query_handler(registration, text='create_account')
     disp.register_callback_query_handler(kod_register, text='kod_register')
+    disp.register_message_handler(reg_phone, content_types=['contact'])
     # disp.register_callback_query_handler(start, text='start')
 
 

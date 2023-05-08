@@ -19,6 +19,4 @@ btn_reg = InlineKeyboardMarkup(inline_keyboard=[
 
 btn_reg2 = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='Реєстрація по телефону', request_contact=True)]
-],
-    resize_keyboard=True)
-
+], resize_keyboard=True)
